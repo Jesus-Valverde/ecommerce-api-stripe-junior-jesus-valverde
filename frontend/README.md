@@ -12,10 +12,10 @@ Este proyecto se desarrollo usando de base una plantilla ecommerce en Next.js, c
 
 ## Instalación
 
-1. Clonar el repo y moverse a la carpeta frontend/src
+1. Clonar el repo y moverse a la carpeta frontend
 ```bash
 git clone https://github.com/Jesus-Valverde/ecommerce-api-stripe-junior-jesus-valverde.git
-cd frontend/src
+cd frontend
 ```
 
 2.  Instalar dependencias
