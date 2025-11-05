@@ -30,16 +30,6 @@ const SingleGridItem = ({ item }: { item: Product }) => {
     );
   };
 
-  const handleItemToWishList = () => {
-    dispatch(
-      addItemToWishlist({
-        ...item,
-        status: "available",
-        quantity: 1,
-      })
-    );
-  };
-
   return (
     <div className="group">
       <div className="relative overflow-hidden flex items-center justify-center rounded-lg bg-white shadow-1 min-h-[270px] mb-4">
@@ -133,7 +123,7 @@ const SingleGridItem = ({ item }: { item: Product }) => {
       </div>
 
       <h3 className="font-medium text-dark ease-out duration-200 hover:text-blue mb-1.5">
-        <Link href="/shop-details"> {item.title} </Link>
+        <p > {item.title} </p>
       </h3>
 
       <span className="flex items-center gap-2 font-medium text-lg">
