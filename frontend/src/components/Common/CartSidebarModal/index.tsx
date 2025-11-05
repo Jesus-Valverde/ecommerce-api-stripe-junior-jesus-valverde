@@ -12,11 +12,43 @@ import SingleItem from "./SingleItem";
 import Link from "next/link";
 import EmptyCart from "./EmptyCart";
 
+
 const CartSidebarModal = () => {
   const { isCartModalOpen, closeCartModal } = useCartModalContext();
   const cartItems = useAppSelector((state) => state.cartReducer.items);
 
   const totalPrice = useSelector(selectTotalPrice);
+
+  const handleCheckout = async () => {
+    if (cartItems.length === 0) {
+      alert("El carrito está vacío");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/checkout_sessions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: cartItems }),
+      });
+
+
+      const data = await res.json();
+      console.log("Response from backend:", data);
+
+      if (data.url) {
+        window.location.href = data.url; // redirige a Stripe Checkout
+      } else {
+        alert("No se pudo iniciar el checkout. Revisa la consola.");
+        console.error("No se recibió URL de Stripe:", data);
+      }
+    } catch (error) {
+      console.error("Error al iniciar checkout:", error);
+      alert("Ocurrió un error al iniciar el checkout. Revisa la consola.");
+    }
+  };
+
+
 
   useEffect(() => {
     // closing modal while clicking outside
@@ -107,12 +139,12 @@ const CartSidebarModal = () => {
                 Ver carrito
               </Link> */}
 
-              <Link
-                href="/checkout"
+              <button
+                onClick={handleCheckout}
                 className="w-full flex justify-center font-medium text-white bg-dark py-[13px] px-6 rounded-md ease-out duration-200 hover:bg-opacity-95"
               >
                 Comprar
-              </Link>
+              </button>
             </div>
           </div>
         </div>

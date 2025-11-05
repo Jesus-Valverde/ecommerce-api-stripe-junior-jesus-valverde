@@ -45,6 +45,14 @@ cp .env.example .env
 
 ```
 
+4. En la carpeta frontend/, copiar el archivo .env y agregarle tus variables personales
+
+```
+
+cp .env.local.example .env.local
+
+```
+
 ---
 
   
