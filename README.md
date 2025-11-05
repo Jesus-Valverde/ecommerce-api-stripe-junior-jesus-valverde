@@ -75,12 +75,17 @@ El proyecto correrá en [http://localhost:3000](http://localhost:3000).
 
 | Variable | Descripción | Ejemplo |
 |----------|-------------|---------|
-| `NEXT_PUBLIC_API_URL` | URL base de la API de productos | `http://localhost:4000` |
-| `STRIPE_SECRET_KEY` | Clave secreta de Stripe para modo test | `sk_test_XXXX` |
-| `STRIPE_PUBLIC_KEY` | Clave pública de Stripe | `pk_test_XXXX` |
-| `EMAIL_USER` | Usuario de correo de prueba (Ethereal/Mailtrap) | `user@example.com` |
-| `EMAIL_PASS` | Contraseña del correo de prueba | `password123` |
-| `WEBHOOK_SECRET` | Clave secreta para validar webhooks de Stripe | `whsec_XXXX` |
+| `API_BASE_URL` | Nuestra dirección de la API pública de SYSCOM | `https://syscom-api-xj2nzjxykq-uc.a.run.app` |
+| `PORT` | Nuestro puerto local desde el cual abriremos nuestro servidor | `4000` |
+| `PUBLIC_URL` | Nuestra dirección base del backend a la cual apuntaremos para acceder a nuestros endpoints | `http://localhost:4000` |
+| `STRIPE_SECRET_KEY` | Nuestra clave secreta privada para inicializar el SDK de Stripe y crear sesiones de pago | `sk_test_XXXX` |
+| `STRIPE_WEBHOOK_SECRET` | Clave de seguridad usada para verificar que los eventos del webhook de Stripe son válidos | `pk_test_XXXX` |
+| `MAIL_HOST` | Servidor SMTP para enviar correos | `smtp.ethereal.email` |
+| `MAIL_PORT` | Puerto del servidor SMTP  | `587` |
+| `MAIL_USER` | Usuario o email asignado por el servicio SMTP  | `your_user` |
+| `EMAIL_PASS` | Contraseña del servicio SMTP | `password123` |
+| `FROM_EMAIL` | Nombre y correo con el que se enviarán los emails al cliente | `Tienda Demo <no-reply@demo.test>` |
+| `DEV_MOCK` | Permite activar modo “mock” (falso) para desarrollo si la API externa falla (true o false). | `false` |
 
  
 > Asegúrate de no subir tu `.env.local` a repositorios públicos.

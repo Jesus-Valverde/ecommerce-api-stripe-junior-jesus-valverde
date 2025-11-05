@@ -15,19 +15,52 @@ import { getProducts } from "@/lib/products";
 const Products = () => {
   const router = useRouter();
 
+  // Estilo de muestra de productos
   const [productStyle, setProductStyle] = useState("grid");
 
+  // Busqueda
   const [searchQuery, setSearchQuery] = useState("");
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]); 
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedBrand, setSelectedBrand] = useState("");
 
-  const [perPage, setPerPage] = useState(9); // Valor inicial
-  const [currentCount, setCurrentCount] = useState(9); // Productos mostrados actualmente
-
+  // Informacion de los productos
   const [totalProducts, setTotalProducts] = useState(50); // Total general (puedes actualizarlo con el API)
   const [products, setProducts] = useState([]);
+  
+  // Paginación
+  const [allProducts, setAllProducts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [perPage, setPerPage] = useState(9);
+  
+  // **Aquí calculamos las paginas totales de la paginación
+  const totalPages = Math.ceil(allProducts.length / perPage);
+  
+  // Esto es una variable local que contiene solo los productos que se mostrarán en la página actual.
+  const paginatedProducts = allProducts.slice(
+    (currentPage - 1) * perPage,
+    currentPage * perPage
+  );
+
+  // Pagina actual de la paginación
+  const currentCount = paginatedProducts.length;
+
+  // Botones para paginación
+  // Ir atras
+  const goPrevPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  // Ir a la siguiente página
+  const goNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  // Ir a una pagina seleccionada
+  const goToPage = (page) => {
+    setCurrentPage(page);
+  };
 
   // Manejar el envío del formulario
   const handleSubmit = async (e) => {
@@ -50,10 +83,11 @@ const Products = () => {
       brandId: selectedBrand,
     });
 
-    setProducts(productsData);
+    setAllProducts(productsData);
+    setCurrentPage(1); // reset página al buscar
   };
 
-  
+  // Traer categorias y marcas
   useEffect(() => {
     async function fetchData() {
       try {
@@ -68,10 +102,10 @@ const Products = () => {
         console.error("Error al obtener datos:", error);
       }
     }
-
     fetchData();
   }, []);
 
+  // Al cargar la página por primera vez traer los productos 
   useEffect(() => {
     async function fetchInitialProducts() {
       const query = searchQuery.trim() || "camara"; // por defecto "camara"
@@ -80,12 +114,11 @@ const Products = () => {
         categoryId: selectedCategory,
         brandId: selectedBrand,
       });
-      setProducts(productsData);
+      setAllProducts(productsData);
+      setCurrentPage(1);
     }
-
     fetchInitialProducts();
   }, []); // [] asegura que esto solo corra una vez al montar la página
-
 
   return (
     <>
@@ -180,13 +213,27 @@ const Products = () => {
                       min="1"
                       max="100"
                       value={perPage}
-                      onChange={(e) => setPerPage(Number(e.target.value))}
+                      onChange={(e) => {
+                        const value = Number(e.target.value);
+                        // Validar que sea al menos 1
+                        if (value >= 1) {
+                          setPerPage(value);
+                          setCurrentPage(1); // opcional: resetear a la primera página
+                        } else {
+                          // Si el input queda vacío o menor que 1, mantener 1
+                          setPerPage(1);
+                          setCurrentPage(1);
+                        }
+                      }}
                       className="w-20 border border-gray-300 rounded-md px-2 py-1 text-center focus:outline-none focus:border-blue-500 transition"
                     />
 
                     <p className="text-sm text-gray-500">
-                      Mostrando <span className="text-dark font-medium">{currentCount}</span> de{" "}
-                      <span className="text-dark font-medium">{totalProducts}</span> productos
+                      Mostrado{" "}
+                      <span className="text-dark font-medium">
+                        {Math.min(currentPage * perPage, totalProducts)}
+                      </span>{" "}
+                      de <span className="text-dark font-medium">{totalProducts}</span> productos
                     </p>
                   </div>
                 </div>
@@ -200,7 +247,7 @@ const Products = () => {
                     : "flex flex-col gap-7.5"
                 }`}
               >
-                {products.map((item, key) =>
+                {paginatedProducts.map((item, key) =>
                   productStyle === "grid" ? (
                     <SingleGridItem item={item} key={key} />
                   ) : (
@@ -214,13 +261,14 @@ const Products = () => {
               <div className="flex justify-center mt-15">
                 <div className="bg-white shadow-1 rounded-md p-2">
                   <ul className="flex items-center">
+                    {/* Boton atras */}
                     <li>
                       <button
                         id="paginationLeft"
-                        aria-label="button for pagination left"
                         type="button"
-                        disabled
-                        className="flex items-center justify-center w-8 h-9 ease-out duration-200 rounded-[3px disabled:text-gray-4"
+                        disabled={currentPage === 1}
+                        onClick={goPrevPage}
+                        className="flex items-center justify-center w-8 h-9 ease-out duration-200 rounded-[3px] disabled:text-gray-4"
                       >
                         <svg
                           className="fill-current"
@@ -238,75 +286,29 @@ const Products = () => {
                       </button>
                     </li>
 
-                    <li>
+                    {/* Números de página */}
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                       <a
+                        key={page}
                         href="#"
-                        className="flex py-1.5 px-3.5 duration-200 rounded-[3px] bg-blue text-white hover:text-white hover:bg-blue"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          goToPage(page);
+                        }}
+                        className={`flex py-1.5 px-3.5 duration-200 rounded-[3px] ${currentPage === page ? 'bg-blue text-white' : 'hover:text-white hover:bg-blue'}`}
                       >
-                        1
+                        {page}
                       </a>
-                    </li>
+                    ))}
 
-                    <li>
-                      <a
-                        href="#"
-                        className="flex py-1.5 px-3.5 duration-200 rounded-[3px] hover:text-white hover:bg-blue"
-                      >
-                        2
-                      </a>
-                    </li>
-
-                    <li>
-                      <a
-                        href="#"
-                        className="flex py-1.5 px-3.5 duration-200 rounded-[3px] hover:text-white hover:bg-blue"
-                      >
-                        3
-                      </a>
-                    </li>
-
-                    <li>
-                      <a
-                        href="#"
-                        className="flex py-1.5 px-3.5 duration-200 rounded-[3px] hover:text-white hover:bg-blue"
-                      >
-                        4
-                      </a>
-                    </li>
-
-                    <li>
-                      <a
-                        href="#"
-                        className="flex py-1.5 px-3.5 duration-200 rounded-[3px] hover:text-white hover:bg-blue"
-                      >
-                        5
-                      </a>
-                    </li>
-
-                    <li>
-                      <a
-                        href="#"
-                        className="flex py-1.5 px-3.5 duration-200 rounded-[3px] hover:text-white hover:bg-blue"
-                      >
-                        ...
-                      </a>
-                    </li>
-
-                    <li>
-                      <a
-                        href="#"
-                        className="flex py-1.5 px-3.5 duration-200 rounded-[3px] hover:text-white hover:bg-blue"
-                      >
-                        10
-                      </a>
-                    </li>
-
+                    {/* Boton adelante */}
                     <li>
                       <button
-                        id="paginationLeft"
-                        aria-label="button for pagination left"
+                        id="paginationRight"
                         type="button"
-                        className="flex items-center justify-center w-8 h-9 ease-out duration-200 rounded-[3px] hover:text-white hover:bg-blue disabled:text-gray-4"
+                        disabled={currentPage === totalPages}
+                        onClick={goNextPage}
+                        className="flex items-center justify-center w-8 h-9 ease-out duration-200 rounded-[3px] disabled:text-gray-4"
                       >
                         <svg
                           className="fill-current"
