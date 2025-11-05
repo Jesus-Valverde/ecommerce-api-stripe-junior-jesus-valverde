@@ -1,6 +1,3 @@
-Claro, aquí tienes todo el contenido del README en un solo bloque de código listo para copiar y pegar en un archivo `README.md`:
-
-````markdown
 # 🛒 Ecommerce API + Stripe (modo test) – Jesús Manuel Valverde Pérez
 
 ## Descripción General
@@ -137,7 +134,4 @@ ZIP: cualquier código
 📧 [jesusvalverde.dev@gmail.com](mailto:jesusvalverde.dev@gmail.com)
 💼 [GitHub](https://github.com/Jesus-Valverde) | [LinkedIn](https://www.linkedin.com/in/jes-val/)
 
-```
-
-Si quieres, puedo también hacer una **versión más visual con secciones colapsables y badges** para que quede más profesional en GitLab. ¿Quieres que haga eso?
 ```
