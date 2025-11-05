@@ -138,10 +138,13 @@ const QuickViewModal = () => {
                     </button>
 
                     <Image
-                      src={product?.imgs?.previews?.[activePreview]}
-                      alt="products-details"
+                      src={product?.imgs?.previews?.[activePreview] || "/images/products/imagen_no_disponible.jpg"}
+                      alt={product?.title || "Producto sin imagen"}
                       width={400}
                       height={400}
+                      onError={(e) => {
+                        e.currentTarget.src = "/images/products/imagen_no_disponible.jpg";
+                      }}
                     />
                   </div>
                 </div>

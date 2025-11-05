@@ -68,13 +68,13 @@ router.get("/brands/:id/products", async (req, res) => {
 
 // Módulo de Productos
 
-// Buscar productos
+// Buscar productos ( q: texto a buscar, categoria: ID de la categoría)
 router.get("/products/search", async (req, res) => {
     try {
-        const { busqueda, marca, categoria_id, page, per_page } = req.query;
+        const { q, marca, categoria, page, per_page } = req.query;
 
         const { data } = await syscomClient.get("/api/products/search", {
-        params: { busqueda, marca, categoria_id, page, per_page },
+        params: { q, marca, categoria, page, per_page },
         });
 
         res.json(data);

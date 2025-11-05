@@ -1,7 +1,7 @@
 "use client";
+import { getCategories } from "@/lib/categories";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { useCallback, useRef, useEffect } from "react";
-import data from "./categoryData";
+import { useCallback, useRef, useEffect, useState } from "react";
 import Image from "next/image";
 
 // Import Swiper styles
@@ -11,6 +11,7 @@ import SingleItem from "./SingleItem";
 
 const Categories = () => {
   const sliderRef = useRef(null);
+  const [categories, setCategories] = useState([]);
 
   const handlePrev = useCallback(() => {
     if (!sliderRef.current) return;
@@ -20,6 +21,20 @@ const Categories = () => {
   const handleNext = useCallback(() => {
     if (!sliderRef.current) return;
     sliderRef.current.swiper.slideNext();
+  }, []);
+
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const res = await fetch("http://localhost:4000/internal/categories");
+        const data = await res.json();
+        setCategories(data);
+      } catch (error) {
+        console.error("Error al obtener categorías:", error);
+      }
+    }
+
+    fetchCategories();
   }, []);
 
   useEffect(() => {
@@ -134,9 +149,9 @@ const Categories = () => {
               },
             }}
           >
-            {data.map((item, key) => (
-              <SwiperSlide key={key}>
-                <SingleItem item={item} />
+            {categories.map((cat) => (
+              <SwiperSlide key={cat.id}>
+                <SingleItem item={cat} />
               </SwiperSlide>
             ))}
           </Swiper>
