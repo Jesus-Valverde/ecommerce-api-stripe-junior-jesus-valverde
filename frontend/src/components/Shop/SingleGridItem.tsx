@@ -22,12 +22,14 @@ const SingleGridItem = ({ item }: { item: Product }) => {
 
   // add to cart
   const handleAddToCart = () => {
-    dispatch(
-      addItemToCart({
-        ...item,
-        quantity: 1,
-      })
-    );
+    dispatch(addItemToCart({
+      id: item.id,
+      title: item.title,
+      price: item.price,
+      discountedPrice: item.discountedPrice,
+      quantity: 1, // la cantidad que quieras agregar
+      imgs: item.imgs,
+    }));
   };
 
   return (
@@ -48,7 +50,7 @@ const SingleGridItem = ({ item }: { item: Product }) => {
             onClick={() => {
               openModal();
               handleQuickViewUpdate();
-            }}
+            }}  
             id="newOne"
             aria-label="button for quick view"
             className="flex items-center justify-center w-9 h-9 rounded-[5px] shadow-1 ease-out duration-200 text-dark bg-white hover:text-blue"

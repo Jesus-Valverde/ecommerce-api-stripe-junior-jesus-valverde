@@ -128,14 +128,14 @@ const Footer = () => {
 
             <ul className="flex flex-col gap-3.5">
               <li>
-                <a className="ease-out duration-200 hover:text-blue" href="#">
+                <a className="ease-out duration-200 hover:text-blue" href="/products">
                   Comprar
                 </a>
               </li>
               <li>
-                <a className="ease-out duration-200 hover:text-blue" href="#">
+                {/* <a className="ease-out duration-200 hover:text-blue" href="#">
                   Carrito
-                </a>
+                </a> */}
               </li>
             </ul>
           </div>
