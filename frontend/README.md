@@ -23,6 +23,14 @@ cd frontend
 npm install
 ```
 
+3. En la carpeta frontend/, copiar el archivo .env y agregarle tus variables personales
+
+```
+
+cp .env.local.example .env.local
+
+```
+
 ---
 
 ## Scripts
