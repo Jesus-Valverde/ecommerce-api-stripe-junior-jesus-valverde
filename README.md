@@ -37,7 +37,13 @@ npm install
 
 ```
 
-  
+3. En la carpeta backend/, copiar el archivo .env y agregarle tus variables personales
+
+```
+
+cp .env.example .env
+
+```
 
 ---
 
