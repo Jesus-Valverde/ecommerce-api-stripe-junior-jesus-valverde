@@ -9,8 +9,6 @@ const Home = () => {
     <main>
       <Hero />
       <Categories />
-      <NewArrival />
-      <BestSeller />
     </main>
   );
 };
