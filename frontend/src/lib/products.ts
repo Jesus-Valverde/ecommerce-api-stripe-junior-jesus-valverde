@@ -32,8 +32,10 @@ export async function getProducts({
         brand: p.marca,
         price: parseFloat(p.precios.precio_lista) || 0,
         discountedPrice: parseFloat(p.precios.precio_descuento) || 0,
+        stock: p.total_existencia || 0,
+        description: p.sat_description || "",
         imgs: {
-            previews: [p.img_portada || "/images/placeholder-product.png"],
+            previews: [p.img_portada || "/images/products/imagen_no_disponible.jpg"],
         },
         reviews: Math.floor(Math.random() * 100), // Si no hay reviews, inventamos un número
         link: p.link_privado,
